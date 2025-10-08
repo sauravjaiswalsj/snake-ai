@@ -29,7 +29,6 @@ def myAI(state: GameState) -> Turn:
         if s.isAlive:
             occupied |= set(s.body)
 
-    # Helper to check if a cell is safe
     def is_safe(cell):
         x, y = cell
         return 0 <= x < grid_width and 0 <= y < grid_height and cell not in occupied
@@ -37,12 +36,12 @@ def myAI(state: GameState) -> Turn:
     # BFS to find shortest path to any food
     from collections import deque
     def bfs(start, targets):
-        queue = deque()
-        queue.append((start, []))
-        visited = set()
-        visited.add(start)
-        while queue:
-            pos, path = queue.popleft()
+        qu = deque()
+        qu.append((start, []))
+        isVisited = set()
+        isVisited.add(start)
+        while qu:
+            pos, path = qu.popleft()
             if pos in targets:
                 return path
             for turn in [Turn.LEFT, Turn.STRAIGHT, Turn.RIGHT]:
@@ -50,9 +49,9 @@ def myAI(state: GameState) -> Turn:
                 dir_idx = (my_snake.direction + turn.value) % 4 if not path else (my_snake.direction + sum([t.value for t in path + [turn]])) % 4
                 dx, dy = [(0, -1), (1, 0), (0, 1), (-1, 0)][dir_idx]
                 next_pos = (pos[0] + dx, pos[1] + dy)
-                if next_pos not in visited and is_safe(next_pos):
-                    queue.append((next_pos, path + [turn]))
-                    visited.add(next_pos)
+                if next_pos not in isVisited and is_safe(next_pos):
+                    qu.append((next_pos, path + [turn]))
+                    isVisited.add(next_pos)
         return None
 
     # Try to find path to food
