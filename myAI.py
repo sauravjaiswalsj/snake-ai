@@ -66,9 +66,9 @@ def myAI(state: GameState) -> Turn:
         if is_safe(next_head):
             return turn
 
+    #saved
     # No safe moves, just go straight
     return Turn.STRAIGHT
-
     
     return random.choice(list(Turn))
 
